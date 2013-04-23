@@ -222,11 +222,14 @@ def mturkroute():
         raise ExperimentError('hit_assign_worker_id_not_set_in_mturk')
     # Person has accepted the HIT, entering them into the database.
     hitId = request.args['hitId']
-    #  Turn assignmentId into unique combination of assignment and worker Id 
-    assignmentId = request.args['assignmentId'] + '.' + request.args['workerId']
+
     already_in_db = False
     if request.args.has_key('workerId'):
         workerId = request.args['workerId']
+
+        #  Turn assignmentId into unique combination of assignment and worker Id 
+        assignmentId = request.args['assignmentId'] + '.' + request.args['workerId']
+        
         # first check if this workerId has completed the task before (v1)
         nrecords = Participant.query.\
                    filter(Participant.assignmentid != assignmentId).\
